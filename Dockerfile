@@ -1,7 +1,7 @@
 FROM python:3.6-buster as builder
 WORKDIR /app
-COPY ./haaska/haaska.py .
-COPY ./haaska/config/config.json.sample ./config.json
+# COPY ./haaska/haaska.py .
+# COPY ./haaska/config/config.json.sample ./config.json
 RUN pip install -t . requests pysocks awslambdaric
 
 FROM alpine:latest as tailscale
@@ -18,6 +18,7 @@ FROM public.ecr.aws/lambda/python:3.6
 ADD https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie /usr/local/bin/aws-lambda-rie
 RUN chmod 755 /usr/local/bin/aws-lambda-rie
 COPY ./custom_entrypoint /var/runtime/custom_entrypoint
+COPY ./haaska.py .
 COPY --from=builder /app/ /var/task
 COPY --from=tailscale /app/tailscaled /var/runtime/tailscaled
 COPY --from=tailscale /app/tailscale /var/runtime/tailscale
