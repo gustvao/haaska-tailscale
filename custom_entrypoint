@@ -6,6 +6,7 @@ do
     sleep 0.1
 done
 echo Tailscale started
+/var/runtime/tailscale status
 
 if [ -z "${AWS_LAMBDA_RUNTIME_API}" ]; then
   exec env ALL_PROXY="socks5://localhost:1055/" /usr/local/bin/aws-lambda-rie /var/lang/bin/python3.6 -m awslambdaric $@
