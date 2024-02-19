@@ -75,18 +75,22 @@ class HomeAssistant(object):
 class Configuration(object):
     def __init__(self, filename=None, opts_dict=None):
         self._json = {}
-        if filename is not None:
-            with open(filename) as f:
-                self._json = json.load(f)
+        #if filename is not None:
+        #    with open(filename) as f:
+        #        self._json = json.load(f)
 
-        if opts_dict is not None:
-            self._json = opts_dict
+        #if opts_dict is not None:
+        #    self._json = opts_dict
 
         self.url = os.environ.get("HA_URL")
         self.bearer_token = os.environ.get("HA_TOKEN")
-        self.ssl_verify = self.get(['ssl_verify', 'ha_cert'], default=True)
-        self.ssl_client = self.get(['ssl_client'], default='')
-        self.debug = self.get(['debug'], default=False)
+        self.ssl_verify = os.environ.get("SSL_VERIFY")
+        self.ssl_client = os.environ.get("SSL_CLIENT")
+        self.debug = os.environ.get("DEBUG")
+        
+        # self.ssl_verify = self.get(['ssl_verify', 'ha_cert'], default=True)
+        # self.ssl_client = self.get(['ssl_client'], default='')
+        # self.debug = self.get(['debug'], default=False)
 
     def get(self, keys, default=None):
         for key in keys:
